@@ -8,6 +8,7 @@ from framework.internal.http.mail import MailApi
 from framework.internal.kafka.producer import Producer
 
 
+
 def test_failed_registration(account: AccountApi, mail: MailApi) -> None:
     expected_mail = "string@mail.ru"
     account.register_user(login="string", email=expected_mail, password="string")
@@ -32,7 +33,7 @@ def test_successful_registration(account: AccountApi, mail: MailApi) -> None:
     else:
         raise AssertionError("Email not found")
 
-#/ui/kafka-cluster/topic
+
 
 def test_success_registration_with_kafka_producer(mail: MailApi, kafka_producer: Producer) -> None:
     base = uuid.uuid4().hex
