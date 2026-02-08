@@ -1,0 +1,17 @@
+[tool.poetry]
+name = "dm-brokers"
+version = "0.1.0"
+description = ""
+authors = ["Kristina Pylzy <kovengor@gmail.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.10"
+httpx = "^0.28.1"
+pytest = "^9.0.2"
+kafka-python = "^2.3.0"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
