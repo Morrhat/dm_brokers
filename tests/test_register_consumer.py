@@ -1,15 +1,20 @@
 import json
 import uuid
+import time
 
 from kafka import KafkaConsumer
 
+from framework.internal.kafka.consumer import Consumer
 from framework.internal.kafka.producer import Producer
 
 
 
-# Тесты на проверку асинхронной регистрации с консумером
+# Тесты на проверку асинхронной регистрации с классом консумером
 #
-def test_success_registration_with_kafka_producer_consumer(kafka_producer: Producer) -> None:
+def test_success_registration_with_kafka_producer_consumer(
+        kafka_consumer: Consumer,
+        kafka_producer: Producer
+) -> None:
     base = uuid.uuid4().hex
     message = {
               "login": base,
@@ -17,17 +22,10 @@ def test_success_registration_with_kafka_producer_consumer(kafka_producer: Produ
               "password": "123123123"
             }
     kafka_producer.send('register-events', message)
-
-    consumer = KafkaConsumer(
-        'register-events',
-    bootstrap_servers=['185.185.143.231:9092'],
-    auto_offset_reset='latest',
-    value_deserializer=lambda x: json.loads(x.decode('utf-8')),
-    )
-
-    for message in consumer:
+    for i in range(10):
+        message = kafka_consumer.get_message()
         if message.value["login"] == base:
             break
-
-    consumer.close()
+    else:
+        raise AssertionError("Email not found")
 
